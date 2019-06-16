@@ -95,7 +95,6 @@ class RandomWalk:
 
 
 walk = RandomWalk()
-data, label = (walk.generate_walk_data_set(100))
+data, label = (walk.generate_walk_data_set(500))
 np.save("walk_dataset/data.npy", data)
-np.save("walk_dataset.npy", label)
-print(data.shape)
+np.save("walk_dataset/label.npy", label)
