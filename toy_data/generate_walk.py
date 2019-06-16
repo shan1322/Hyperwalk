@@ -3,7 +3,7 @@ import hypernetx as hnx
 import secrets
 import numpy as np
 
-with open("../toy data/graph.json") as graph:
+with open("../toy_data/graph.json") as graph:
     graph = json.load(graph)
 
 
@@ -95,6 +95,6 @@ class RandomWalk:
 
 
 walk = RandomWalk()
-data, label = (walk.generate_walk_data_set(500))
+data, label = (walk.generate_walk_data_set(100))
 np.save("walk_dataset/data.npy", data)
 np.save("walk_dataset/label.npy", label)
