@@ -1,6 +1,6 @@
 import json
 import hypernetx as hnx
-import secrets
+import random
 import numpy as np
 
 with open("../toy_data/graph.json") as graph:
@@ -9,7 +9,7 @@ with open("../toy_data/graph.json") as graph:
 
 class RandomWalk:
     def __init__(self):
-        self.walk_length = 5
+        self.walk_length = 3
         self.graph = graph
         self.hyper_graph = hnx.Hypergraph(graph)
         self.vertices = []
@@ -62,7 +62,7 @@ class RandomWalk:
 
         for edges in neighbour_edges:
             while neighbour_edges_count[edges] > 0:
-                next_vertex = secrets.choice(self.graph[edges])
+                next_vertex = random.choice(self.graph[edges])
                 if next_vertex not in walk:
                     walk.append(next_vertex)
                     neighbour_edges_count[edges] = neighbour_edges_count[edges] - 1
@@ -78,23 +78,27 @@ class RandomWalk:
         data = []
         label = []
         list_of_vertices = list(self.vertices)
-        start_vertex = 1
+        start_vertex = random.choice(list_of_vertices)
         list_of_vertices.remove(start_vertex)
         while len(list_of_vertices) > 0:
-            print(len(list_of_vertices))
-            start_vertex = secrets.choice(list_of_vertices)
+            start_vertex = random.choice(list_of_vertices)
+           # print(len(list_of_vertices))
+
             for iteration in range(walks_per_vertex):
-                if iteration % 2 == 0:
+                if iteration % 3 == 0:
+                    print(start_vertex)
+                    data.append(self.single_walk(start_vertex))
+
+                    label.append(0)
+                else:
+                    print(start_vertex)
                     data.append(self.single_walk(start_vertex))
                     label.append(1)
-                elif iteration % 2 == 1:
-                    data.append(self.single_walk(start_vertex))
-                    label.append(0)
             list_of_vertices.remove(start_vertex)
         return np.asarray(data), np.asarray(label)
 
 
 walk = RandomWalk()
-data, label = (walk.generate_walk_data_set(100))
+data, label = (walk.generate_walk_data_set(60))
 np.save("walk_dataset/data.npy", data)
 np.save("walk_dataset/label.npy", label)
