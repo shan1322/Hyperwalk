@@ -15,7 +15,7 @@ x, y = [], []
 for i in X_embedded:
     x.append(i[0])
     y.append(i[1])
-fig= plt.scatter(x, y)
+fig = plt.scatter(x, y)
 
 for i, txt in enumerate(key):
     plt.annotate(txt, (x[i], y[i]))

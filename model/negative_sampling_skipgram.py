@@ -8,9 +8,9 @@ import json
 
 class SkipGram:
     def __init__(self):
-        self.latent_dimension = 50
-        self.max_length = 6
-        self.vocab_size = 15
+        self.latent_dimension = 5
+        self.max_length = 4
+        self.vocab_size = 17
 
     def skip_gram_model(self):
         """
@@ -21,7 +21,6 @@ class SkipGram:
         model = Sequential()
         model.add(Embedding(self.vocab_size, self.latent_dimension, input_length=self.max_length))
         model.add(Flatten())
-        model.add(Dense(256))
         model.add(Dense(1, activation='sigmoid'))
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
         return model
@@ -35,7 +34,7 @@ class SkipGram:
         """
 
         skip_gram = self.skip_gram_model()
-        skip_gram.fit(features, labels, verbose=2, batch_size=32, epochs=20, shuffle=True)
+        skip_gram.fit(features, labels, verbose=2, batch_size=32, epochs=200, shuffle=True)
         weights = skip_gram.layers[0].get_weights()
         return weights
 
@@ -45,7 +44,7 @@ class SkipGram:
         :param features:graph nodes
         :return: one hot vectors
         """
-        features = to_categorical(features, num_classes=15)
+        features = to_categorical(features, num_classes=17)
         return features
 
     def recover_embedding(self, features, labels):
