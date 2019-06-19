@@ -8,8 +8,8 @@ import json
 
 class SkipGram:
     def __init__(self):
-        self.latent_dimension = 5
-        self.max_length = 4
+        self.latent_dimension = 10
+        self.max_length = 6
         self.vocab_size = 9
 
     def skip_gram_model(self):
@@ -71,7 +71,8 @@ class SkipGram:
         return embedding_json
 
 
-feature, label = np.load("../toy_data/walk_dataset/data.npy"), np.load("../toy_data/walk_dataset/label.npy")
+feature, label = np.load("../toy_data/walk_dataset/data.npy",allow_pickle=True), np.load("../toy_data/walk_dataset/label.npy")
+print(feature.shape)
 skip_gram_obj = SkipGram()
 json_emb = skip_gram_obj.recover_embedding(feature, label)
 with open("../embeddings/node_embeddings.json", 'w') as node_embedding:
