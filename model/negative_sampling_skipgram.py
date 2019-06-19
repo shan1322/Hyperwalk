@@ -10,7 +10,7 @@ class SkipGram:
     def __init__(self):
         self.latent_dimension = 5
         self.max_length = 4
-        self.vocab_size = 17
+        self.vocab_size = 9
 
     def skip_gram_model(self):
         """
@@ -44,7 +44,7 @@ class SkipGram:
         :param features:graph nodes
         :return: one hot vectors
         """
-        features = to_categorical(features, num_classes=17)
+        features = to_categorical(features, num_classes=9)
         return features
 
     def recover_embedding(self, features, labels):

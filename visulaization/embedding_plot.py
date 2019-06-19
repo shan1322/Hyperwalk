@@ -19,4 +19,6 @@ fig = plt.scatter(x, y)
 
 for i, txt in enumerate(key):
     plt.annotate(txt, (x[i], y[i]))
+
 plt.show()
+plt.savefig("../images/e4.png",dpi=fig.dpi)

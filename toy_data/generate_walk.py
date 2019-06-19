@@ -9,7 +9,7 @@ with open("../toy_data/graph.json") as graph:
 
 class RandomWalk:
     def __init__(self):
-        self.walk_length = 3
+        self.walk_length = 5
         self.graph = graph
         self.hyper_graph = hnx.Hypergraph(graph)
         self.vertices = []
@@ -59,9 +59,19 @@ class RandomWalk:
         """
         walk = [start_vertex]
         neighbour_edges, neighbour_edges_count = self.first_neighbour_edges(start_vertex)
-
+        for neighbour_edge in neighbour_edges:
+            if start_vertex in self.graph[neighbour_edge]:
+                neighbour_edges_count[neighbour_edge] = neighbour_edges_count[neighbour_edge] - 1
+        count_vertex = []
+        for edges in neighbour_edges:
+            count_vertex.extend(self.graph[edges])
+        try:
+            count_vertex[self.walk_length]
+        except IndexError:
+            print("walk size exceeds neighbour vertices")
         for edges in neighbour_edges:
             while neighbour_edges_count[edges] > 0:
+                # print(edges, neighbour_edges_count[edges])
                 next_vertex = random.choice(self.graph[edges])
                 if next_vertex not in walk:
                     walk.append(next_vertex)
@@ -82,13 +92,12 @@ class RandomWalk:
         list_of_vertices.remove(start_vertex)
         while len(list_of_vertices) > 0:
             start_vertex = random.choice(list_of_vertices)
-           # print(len(list_of_vertices))
+            # print(len(list_of_vertices))
 
             for iteration in range(walks_per_vertex):
                 if iteration % 3 == 0:
-                    print(start_vertex)
                     data.append(self.single_walk(start_vertex))
-
+                    print(start_vertex)
                     label.append(0)
                 else:
                     print(start_vertex)
@@ -99,6 +108,7 @@ class RandomWalk:
 
 
 walk = RandomWalk()
+
 data, label = (walk.generate_walk_data_set(60))
 np.save("walk_dataset/data.npy", data)
 np.save("walk_dataset/label.npy", label)
