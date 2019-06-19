@@ -34,7 +34,7 @@ class SkipGram:
         """
 
         skip_gram = self.skip_gram_model()
-        skip_gram.fit(features, labels, verbose=2, batch_size=32, epochs=200, shuffle=True)
+        skip_gram.fit(features, labels, verbose=2, batch_size=32, epochs=20, shuffle=True)
         weights = skip_gram.layers[0].get_weights()
         return weights
 

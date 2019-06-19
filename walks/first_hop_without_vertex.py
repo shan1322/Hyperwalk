@@ -105,7 +105,7 @@ class RandomWalk:
 
 
 walk = RandomWalk()
-#print(walk.single_walk(0))
-data, label = (walk.generate_walk_data_set(100))
-np.save("walk_dataset/data.npy", data)
-np.save("walk_dataset/label.npy", label)
+# print(walk.single_walk(0))
+data, label = (walk.generate_walk_data_set(10000))
+np.save("../toy_data/walk_dataset/data.npy", data)
+np.save("../toy_data/walk_dataset/label.npy", label)
