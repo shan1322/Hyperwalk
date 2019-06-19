@@ -66,10 +66,10 @@ class RandomWalk:
             count_vertex[self.walk_length]
         except IndexError:
             print("walk size exceeds neighbour vertices")
-        for edges in neighbour_edges:
-            while neighbour_edges_count[edges] > 0:
-                # print(edges, neighbour_edges_count[edges])
-                next_vertex = random.choice(self.graph[edges])
+        while sum(list(neighbour_edges_count.values())) > 0:
+            edges = random.choice(neighbour_edges)
+            next_vertex = random.choice(self.graph[edges])
+            if neighbour_edges_count[edges] > 0:
                 walk.append(next_vertex)
                 neighbour_edges_count[edges] = neighbour_edges_count[edges] - 1
 
@@ -92,7 +92,7 @@ class RandomWalk:
             # print(len(list_of_vertices))
 
             for iteration in range(walks_per_vertex):
-                if iteration % 3 == 0:
+                if iteration % 4 == 0:
                     data.append(self.single_walk(start_vertex))
                     print(start_vertex)
                     label.append(0)
@@ -106,6 +106,7 @@ class RandomWalk:
 
 walk = RandomWalk()
 # print(walk.single_walk(0))
-data, label = (walk.generate_walk_data_set(10000))
+data, label = (walk.generate_walk_data_set(1000))
+print(data.shape)
 np.save("../toy_data/walk_dataset/data.npy", data)
 np.save("../toy_data/walk_dataset/label.npy", label)
