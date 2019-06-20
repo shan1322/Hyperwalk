@@ -4,12 +4,17 @@ import numpy as np
 from keras.utils import to_categorical
 from tqdm import tqdm
 import json
+import pickle
+
+with open("../citation_dataset/labels.pkl", 'rb') as file:
+    encoder = pickle.load(file)
 
 
 class SkipGram:
     def __init__(self):
         self.latent_dimension = 10
         self.max_length = 6
+        self.label_encoder = encoder
         self.vocab_size = 9
 
     def skip_gram_model(self):
@@ -34,7 +39,7 @@ class SkipGram:
         """
 
         skip_gram = self.skip_gram_model()
-        skip_gram.fit(features, labels, verbose=2, batch_size=32, epochs=20, shuffle=True)
+        skip_gram.fit(features, labels, verbose=2, batch_size=32, epochs=10, shuffle=True)
         weights = skip_gram.layers[0].get_weights()
         return weights
 
@@ -44,7 +49,7 @@ class SkipGram:
         :param features:graph nodes
         :return: one hot vectors
         """
-        features = to_categorical(features, num_classes=9)
+        features = to_categorical(features, num_classes=self.vocab_size)
         return features
 
     def recover_embedding(self, features, labels):
@@ -54,8 +59,8 @@ class SkipGram:
         :param labels: labels
         :return: embeddings json
         """
-        features_one_hot = skip_gram_obj.one_hot_encode(features)
-        embedding = np.asarray(skip_gram_obj.train(feature, labels))
+        features_one_hot = self.one_hot_encode(features)
+        embedding = np.asarray(self.train(feature, labels))
         embedding_json = {}
         for index in tqdm(range(len(features_one_hot))):
             individual_embedding = np.matmul(features_one_hot[index], embedding)
@@ -67,12 +72,14 @@ class SkipGram:
                 list_embedding.append(emb)
             for index_1 in range(len(feature[index])):
                 if features[index][index_1] not in embedding_json.keys():
-                    embedding_json[str(features[index][index_1])] = list_embedding[0]
+                    embedding_json[str(features[index][index_1])] = \
+                        list_embedding[0]
         return embedding_json
 
 
-feature, label = np.load("../toy_data/walk_dataset/data.npy",allow_pickle=True), np.load("../toy_data/walk_dataset/label.npy")
-print(feature.shape)
+feature, label = np.load("../toy_data/walk_dataset/data.npy", allow_pickle=True), np.load(
+    "../toy_data/walk_dataset/label.npy")
+
 skip_gram_obj = SkipGram()
 json_emb = skip_gram_obj.recover_embedding(feature, label)
 with open("../embeddings/node_embeddings.json", 'w') as node_embedding:
