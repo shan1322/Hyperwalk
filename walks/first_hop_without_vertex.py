@@ -1,7 +1,7 @@
 import json
-import hypernetx as hnx
 import random
 import numpy as np
+from tqdm import tqdm
 
 with open("../toy_data/graph.json") as graph:
     graph = json.load(graph)
@@ -11,12 +11,15 @@ class RandomWalk:
     def __init__(self):
         self.walk_length = 5
         self.graph = graph
-        self.hyper_graph = hnx.Hypergraph(graph)
-        self.vertices = []
-        for vertices_list in self.graph.values():
-            self.vertices.extend(vertices_list)
-        self.vertices = set(self.vertices)
-        self.inverse_map = dict(self.hyper_graph.dual().edges.incidence_dict)
+        self.inverse_map = {}
+        self.vertices = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        for vertex in tqdm(self.vertices):
+            edges = []
+            for edge in self.graph.keys():
+                if vertex in self.graph[edge]:
+                    edges.append(edge)
+            self.inverse_map[vertex] = edges
+        print(self.inverse_map)
 
     def first_neighbour_edges(self, start_vertex):
         """
@@ -29,7 +32,7 @@ class RandomWalk:
         total_vertices = 0
         count_walk = 0
 
-        vertex_to_edge = dict(self.hyper_graph.dual().edges.incidence_dict)
+        vertex_to_edge = self.inverse_map
         for vertices in list(self.graph.values()):
             if start_vertex in vertices:
                 neighbour_vertices.extend(vertices)
@@ -70,7 +73,7 @@ class RandomWalk:
         while sum(list(neighbour_edges_count.values())) > 0:
             edges = random.choice(neighbour_edges)
             next_vertex = random.choice(self.graph[edges])
-            if neighbour_edges_count[edges] > 0 :
+            if neighbour_edges_count[edges] > 0:
                 walk.append(next_vertex)
                 neighbour_edges_count[edges] = neighbour_edges_count[edges] - 1
 
@@ -90,9 +93,9 @@ class RandomWalk:
         list_of_vertices.remove(start_vertex)
         while len(list_of_vertices) > 0:
             start_vertex = random.choice(list_of_vertices)
+            print(start_vertex)
             for iteration in range(walks_per_vertex):
                 if iteration % 4 == 0:
-
                     data.append(self.single_walk(start_vertex))
                     print(start_vertex)
                     label.append(0)
@@ -106,7 +109,7 @@ class RandomWalk:
 
 walk = RandomWalk()
 # print(walk.single_walk(0))
-data, label = (walk.generate_walk_data_set(150))
+data, label = (walk.generate_walk_data_set(50))
 print(data.shape)
 np.save("../toy_data/walk_dataset/data.npy", data)
 np.save("../toy_data/walk_dataset/label.npy", label)
