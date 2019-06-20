@@ -16,6 +16,7 @@ class RandomWalk:
         for vertices_list in self.graph.values():
             self.vertices.extend(vertices_list)
         self.vertices = set(self.vertices)
+        self.inverse_map = dict(self.hyper_graph.dual().edges.incidence_dict)
 
     def first_neighbour_edges(self, start_vertex):
         """
@@ -69,7 +70,7 @@ class RandomWalk:
         while sum(list(neighbour_edges_count.values())) > 0:
             edges = random.choice(neighbour_edges)
             next_vertex = random.choice(self.graph[edges])
-            if neighbour_edges_count[edges] > 0:
+            if neighbour_edges_count[edges] > 0 :
                 walk.append(next_vertex)
                 neighbour_edges_count[edges] = neighbour_edges_count[edges] - 1
 
@@ -89,10 +90,9 @@ class RandomWalk:
         list_of_vertices.remove(start_vertex)
         while len(list_of_vertices) > 0:
             start_vertex = random.choice(list_of_vertices)
-            # print(len(list_of_vertices))
-
             for iteration in range(walks_per_vertex):
                 if iteration % 4 == 0:
+
                     data.append(self.single_walk(start_vertex))
                     print(start_vertex)
                     label.append(0)
@@ -106,7 +106,7 @@ class RandomWalk:
 
 walk = RandomWalk()
 # print(walk.single_walk(0))
-data, label = (walk.generate_walk_data_set(1000))
+data, label = (walk.generate_walk_data_set(150))
 print(data.shape)
 np.save("../toy_data/walk_dataset/data.npy", data)
 np.save("../toy_data/walk_dataset/label.npy", label)
