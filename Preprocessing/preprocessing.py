@@ -1,8 +1,8 @@
 import json
 from sklearn.preprocessing import LabelEncoder
 import pickle
-import numpy as np
 from tqdm import tqdm
+
 
 def convert_to_array(path):
     data = open(path, "r")
@@ -26,7 +26,7 @@ def encode(vertices):
 
 
 def encode_json(graph):
-    with open("../citation_dataset/labels.pkl",'rb') as file:
+    with open("../citation_dataset/labels.pkl", 'rb') as file:
         model = pickle.load(file)
     for edges in tqdm(graph.keys()):
         graph[edges] = model.transform(graph[edges]).tolist()
@@ -41,4 +41,3 @@ encode(vertices)
 
 with open("../citation_dataset/citation_dataset_encoded.json", 'w') as graph:
     json.dump(encode_json(hyper_graph), graph)
-

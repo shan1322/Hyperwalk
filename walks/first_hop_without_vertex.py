@@ -2,9 +2,14 @@ import json
 import random
 import numpy as np
 from tqdm import tqdm
+import pickle
 
 with open("../toy_data/graph.json") as graph:
     graph = json.load(graph)
+
+
+# with open("../citation_dataset/labels.pkl", 'rb') as file:
+#   model = pickle.load(file)
 
 
 class RandomWalk:
@@ -66,10 +71,7 @@ class RandomWalk:
         count_vertex = []
         for edges in neighbour_edges:
             count_vertex.extend(self.graph[edges])
-        try:
-            count_vertex[self.walk_length]
-        except IndexError:
-            print("walk size exceeds neighbour vertices")
+
         while sum(list(neighbour_edges_count.values())) > 0:
             edges = random.choice(neighbour_edges)
             next_vertex = random.choice(self.graph[edges])
@@ -89,27 +91,23 @@ class RandomWalk:
         data = []
         label = []
         list_of_vertices = list(self.vertices)
-        start_vertex = random.choice(list_of_vertices)
-        list_of_vertices.remove(start_vertex)
         while len(list_of_vertices) > 0:
             start_vertex = random.choice(list_of_vertices)
-            print(start_vertex)
+            print(len(list_of_vertices))
             for iteration in range(walks_per_vertex):
                 if iteration % 4 == 0:
                     data.append(self.single_walk(start_vertex))
-                    print(start_vertex)
                     label.append(0)
                 else:
-                    print(start_vertex)
                     data.append(self.single_walk(start_vertex))
                     label.append(1)
             list_of_vertices.remove(start_vertex)
+            print(list_of_vertices)
         return np.asarray(data), np.asarray(label)
 
 
 walk = RandomWalk()
-# print(walk.single_walk(0))
-data, label = (walk.generate_walk_data_set(50))
+data, label = (walk.generate_walk_data_set(150))
 print(data.shape)
 np.save("../toy_data/walk_dataset/data.npy", data)
 np.save("../toy_data/walk_dataset/label.npy", label)

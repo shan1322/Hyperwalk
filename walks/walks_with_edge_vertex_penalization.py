@@ -2,9 +2,12 @@ import json
 import hypernetx as hnx
 import random
 import numpy as np
+import pickle
 
 with open("../toy_data/graph.json") as graph:
     graph = json.load(graph)
+with open("../citation_dataset/labels.pkl", 'rb') as file:
+    model = pickle.load(file)
 
 
 class RandomPenalizationWalk:
@@ -107,7 +110,7 @@ class RandomPenalizationWalk:
             for iteration in range(walks_per_vertex):
                 if iteration % 3 == 0:
                     data.append(self.single_walk(start_vertex))
-                    #print(self.single_walk(start_vertex))
+                    # print(self.single_walk(start_vertex))
                     label.append(0)
                 else:
                     data.append(self.single_walk(start_vertex))
@@ -118,7 +121,7 @@ class RandomPenalizationWalk:
 
 
 random_walk = RandomPenalizationWalk()
-#print(random_walk.single_walk(2))
+# print(random_walk.single_walk(2))
 data, label = (random_walk.generate_walk_data_set(1))
 print(data.shape)
 np.save("../toy_data/walk_dataset/data.npy", data)
