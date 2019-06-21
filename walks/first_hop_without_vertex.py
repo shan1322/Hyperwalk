@@ -4,20 +4,20 @@ import numpy as np
 from tqdm import tqdm
 import pickle
 
-with open("../toy_data/graph.json") as graph:
+with open("../citation_dataset/citation_dataset.json") as graph:
     graph = json.load(graph)
 
 
-# with open("../citation_dataset/labels.pkl", 'rb') as file:
-#   model = pickle.load(file)
+with open("../citation_dataset/labels.pkl", 'rb') as file:
+   model = pickle.load(file)
 
 
 class RandomWalk:
     def __init__(self):
-        self.walk_length = 5
+        self.walk_length = 10
         self.graph = graph
         self.inverse_map = {}
-        self.vertices = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+        self.vertices = model.classes_
         for vertex in tqdm(self.vertices):
             edges = []
             for edge in self.graph.keys():
@@ -107,7 +107,7 @@ class RandomWalk:
 
 
 walk = RandomWalk()
-data, label = (walk.generate_walk_data_set(150))
+data, label = (walk.generate_walk_data_set(40))
 print(data.shape)
 np.save("../toy_data/walk_dataset/data.npy", data)
 np.save("../toy_data/walk_dataset/label.npy", label)
