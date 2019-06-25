@@ -33,11 +33,27 @@ def encode_json(graph):
     return graph
 
 
-hyper_graph, vertices = convert_to_array("../citation_dataset/hyperedges.txt")
+def label(path):
+    data = open(path, "r")
+    label_graph_json = {'1': list(), '2': list(), '3': list(), '4': list(), '5': list(), '6': list(), '7': list(),
+                        '8': list(), "9": list(), "10": list()}
+    for edges in tqdm(data):
+        edges = edges.strip("\n")
+        edges = edges.split(' ')
+        x = label_graph_json[edges[1]]
+        x.append(edges[0])
+        label_graph_json[edges[1]] = x
+    return label_graph_json
 
-with open("../citation_dataset/citation_dataset.json", 'w') as graph:
-    json.dump(hyper_graph, graph)
-encode(vertices)
 
-with open("../citation_dataset/citation_dataset_encoded.json", 'w') as graph:
-    json.dump(encode_json(hyper_graph), graph)
+with open("../citation_dataset/citation_label.json", 'w') as graph:
+    json.dump(label("../citation_dataset/paperid_classid.txt")
+              , graph)
+# hyper_graph, vertices = convert_to_array("../citation_dataset/hyperedges.txt")
+
+# with open("../citation_dataset/citation_dataset.json", 'w') as graph:
+#   json.dump(hyper_graph, graph)
+# encode(vertices)
+
+# with open("../citation_dataset/citation_dataset_encoded.json", 'w') as graph:
+#    json.dump(encode_json(hyper_graph), graph)
