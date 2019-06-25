@@ -14,7 +14,7 @@ with open("../citation_dataset/labels.pkl", 'rb') as file:
 
 class RandomWalk:
     def __init__(self):
-        self.walk_length = 10
+        self.walk_length = 127
         self.graph = graph
         self.inverse_map = {}
         self.vertices = model.classes_
@@ -109,5 +109,5 @@ class RandomWalk:
 walk = RandomWalk()
 data, label = (walk.generate_walk_data_set(40))
 print(data.shape)
-np.save("../toy_data/walk_dataset/data.npy", data)
-np.save("../toy_data/walk_dataset/label.npy", label)
+np.save("../toy_data/walk_dataset/data_40_127.npy", data)
+np.save("../toy_data/walk_dataset/label_40_127.npy", label)
