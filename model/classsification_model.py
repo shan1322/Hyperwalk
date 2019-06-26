@@ -17,12 +17,13 @@ train_labels = np_utils.to_categorical(x_train, num_classes=10)
 test_labels = np_utils.to_categorical(x_test, num_classes=10)
 model = Sequential()
 
-model.add(Dense(128, activation='relu', input_dim=64))
+model.add(Dense(128, activation='relu', input_dim=256))
 model.add(Dropout(0.5))
-model.add(Dense(128, activation='relu', input_dim=64))
+model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(256, activation='relu', input_dim=64))
+model.add(Dense(256, activation='relu'))
 model.add(Dropout(0.5))
+
 model.add(Dense(10, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy',
