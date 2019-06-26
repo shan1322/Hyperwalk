@@ -2,4 +2,3 @@ venv/
 .idea/
 data/
 citation_dataset/
-toy_data/walk_dataset/
