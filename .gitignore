@@ -3,3 +3,4 @@ venv/
 data/
 citation_dataset/
 embeddings/
+embeddings/node_embeddings_2.json
