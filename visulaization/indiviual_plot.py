@@ -30,6 +30,10 @@ val = val.reshape(val.shape[0], val.shape[2])
 X_embedded = PCA(n_components=10).fit_transform(val)
 X_embedded = TSNE(n_components=2, verbose=2, n_iter_without_progress=1000, n_iter=15000, metric="cosine").fit_transform(
     X_embedded)
+val=np.array(val)
+val = val.reshape(val.shape[0], val.shape[2])
+X_embedded = PCA(n_components=10).fit_transform(val)
+X_embedded = TSNE(n_components=2, verbose=2,n_iter_without_progress=1000,n_iter=15000,metric="cosine").fit_transform(X_embedded)
 x, y = [], []
 for i in tqdm(range(len(X_embedded))):
     x.append(X_embedded[i][0])

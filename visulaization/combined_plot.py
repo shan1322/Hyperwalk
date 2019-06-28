@@ -30,7 +30,7 @@ for i in tqdm(temp):
 val = np.array(val)
 val = val.reshape(val.shape[0], val.shape[2])
 
-X_embedded = TSNE(n_components=2, verbose=2, metric="cosine", perplexity=5,n_iter=50000).fit_transform(
+X_embedded = TSNE(n_components=2, verbose=2, metric="cosine", perplexity=5,n_iter=250).fit_transform(
     val)
 x, y, z = [], [], []
 for i in tqdm(range(len(X_embedded))):
