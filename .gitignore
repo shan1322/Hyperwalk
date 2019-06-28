@@ -2,8 +2,5 @@ venv/
 .idea/
 data/
 citation_dataset/
-<<<<<<< HEAD
 embeddings/
 
-=======
->>>>>>> 16ace6a806cea03be1f32e28c18593644e883db3
