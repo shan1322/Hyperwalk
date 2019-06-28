@@ -15,10 +15,11 @@ with open("../citation_dataset/labels.pkl", 'rb') as file:
 
 class SkipGram:
     def __init__(self):
-        self.latent_dimension = 256
+        self.latent_dimension = 50
         self.label_encoder = model
-        self.max_length = 6
+        self.max_length = 16
         self.vocab_size = len(self.label_encoder.classes_)
+
 
     def skip_gram_model(self):
         """
@@ -74,15 +75,15 @@ class SkipGram:
         return embedding_json
 
 
-features, label = np.load("../toy_data/walk_dataset/data_encoded.npy", allow_pickle=True), np.load(
-    "../toy_data/walk_dataset/label.npy")
+features, label = np.load("../toy_data/walk_dataset/data_encoded_16.npy", allow_pickle=True), np.load(
+    "../toy_data/walk_dataset/label_16.npy")
 label = features[:, [6]]
 features = np.delete(features, 6, 1)
-# temp=[]
-# for i in tqdm(feature):
+#temp=[]
+#for i in tqdm(features):
 #   temp.append(model.transform(i))
-# np.save("../toy_data/walk_dataset/data_encoded.npy",temp)
+#np.save("../toy_data/walk_dataset/data_encoded_16.npy",temp)
 skip_gram_obj = SkipGram()
 json_emb = skip_gram_obj.recover_embedding(features, label)
-with open("../embeddings/node_embeddings_2.json", 'w') as node_embedding:
+with open("../embeddings/node_embeddings_16_.json", 'w') as node_embedding:
     json.dump(json_emb, node_embedding)

@@ -3,7 +3,7 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
-with open("../embeddings/node_embeddings_2.json") as emb:
+with open("../embeddings/node_embeddings_16_.json") as emb:
     emb = json.load(emb)
 with open("../citation_dataset/citation_label.json") as labels:
     labels = json.load(labels)

@@ -75,5 +75,5 @@ class FirstHopWalk:
 
 first_hop = FirstHopWalk()
 data, label = (first_hop.generate_walk_data_set(10))
-np.save("../toy_data/walk_dataset/label.npy", label)
-np.save("../toy_data/walk_dataset/data.npy", data)
+np.save("../toy_data/walk_dataset/label_16.npy", label)
+np.save("../toy_data/walk_dataset/data_16.npy", data)
