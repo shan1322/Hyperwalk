@@ -7,7 +7,7 @@ import pickle
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
-with open("../embeddings/node_embeddings_2.json") as emb:
+with open("../embeddings/node_embeddings_clique.json") as emb:
     emb = json.load(emb)
 with open("../citation_dataset/labels.pkl", 'rb') as file:
     encoder = pickle.load(file)
@@ -30,12 +30,12 @@ for i in tqdm(temp):
 val = np.array(val)
 val = val.reshape(val.shape[0], val.shape[2])
 
-X_embedded = TSNE(n_components=2, verbose=2, metric="cosine", perplexity=5,n_iter=250).fit_transform(
+X_embedded = TSNE(n_components=2, verbose=2, metric="cosine").fit_transform(
     val)
 x, y, z = [], [], []
 for i in tqdm(range(len(X_embedded))):
-    x.append(X_embedded[i][0] * 100000)
-    y.append(X_embedded[i][1] * 100000)
+    x.append(X_embedded[i][0])
+    y.append(X_embedded[i][1])
 
 count_1, count_2, count_3, count_4, count_5, count_6, count_7, count_8, count_9, count_10 = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 fig = plt.figure()
