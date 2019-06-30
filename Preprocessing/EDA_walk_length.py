@@ -39,8 +39,6 @@ def median_neighbour_nodes():
     for key in tqdm(graph.keys()):
         number_of_neighbours.append(len(first_hop_neighbour(key)))
         number_of_nodes.append(len(graph[key]))
-    return np.percentile(number_of_neighbours, 50), number_of_neighbours, np.percentile(number_of_nodes,
-                                                                                        50), number_of_nodes
+    return np.percentile(number_of_neighbours, 50), np.percentile(number_of_nodes, 50)
 
-
-print(median_neighbour_nodes()[2])
+print(median_neighbour_nodes())
