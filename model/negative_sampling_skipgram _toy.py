@@ -5,15 +5,13 @@ from keras.utils import to_categorical
 from tqdm import tqdm
 import json
 
-with open("../toy_data/iris_graph.json") as graph:
-    graph = json.load(graph)
 
 
 class SkipGram:
     def __init__(self):
-        self.latent_dimension = 10
-        self.max_length = 15
-        self.vocab_size = 150
+        self.latent_dimension = 64
+        self.max_length = 100
+        self.vocab_size = 4176
 
     def skip_gram_model(self):
         """
@@ -24,7 +22,7 @@ class SkipGram:
         model = Sequential()
         model.add(Embedding(self.vocab_size, self.latent_dimension, input_length=self.max_length))
         model.add(Flatten())
-        model.add(Dense(150, activation='softmax'))
+        model.add(Dense(4176, activation='softmax'))
         model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['acc'])
         return model
 
@@ -37,7 +35,7 @@ class SkipGram:
         """
 
         skip_gram = self.skip_gram_model()
-        skip_gram.fit(features, labels, verbose=2, batch_size=32, epochs=100, shuffle=True)
+        skip_gram.fit(features, labels, verbose=2, batch_size=100, epochs=10, shuffle=True)
         weights = skip_gram.layers[0].get_weights()
         return weights
 
@@ -59,7 +57,7 @@ class SkipGram:
         """
         embedding = np.asarray(self.train(feature, labels))
         embedding_json = {}
-        for index in tqdm(range(150)):
+        for index in tqdm(range(4176)):
             feature_one_hot = self.one_hot_encode([index])
             individual_embedding = np.matmul(feature_one_hot, embedding)
             individual_embedding = individual_embedding.reshape(individual_embedding.shape[1],
@@ -70,9 +68,9 @@ class SkipGram:
 
 
 features = np.load("../toy_data/walk_dataset/data-iris.npy")
-label = features[:, [14]]
-features = np.delete(features, 14, 1)
+label = features[:, [9]]
+features = np.delete(features, 9, 1)
 skip_gram_obj = SkipGram()
 json_emb = skip_gram_obj.recover_embedding(features, label)
-with open("../embeddings/node_embeddings_iris.json", 'w') as node_embedding:
+with open("../embeddings/node_embeddings_abone.json", 'w') as node_embedding:
     json.dump(json_emb, node_embedding)

@@ -13,7 +13,7 @@ with open("../citation_dataset/labels.pkl", 'rb') as file:
 
 class FirstHopWalk:
     def __init__(self):
-        self.walk_length = 16
+        self.walk_length = 30
         self.graph = graph
         self.inverse_map = {}
         self.vertices = model.classes_

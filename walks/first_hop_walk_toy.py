@@ -3,16 +3,16 @@ from tqdm import tqdm
 import random
 import numpy as np
 
-with open("../toy_data/iris_graph.json") as graph:
+with open("../toy_data/abone_graph.json") as graph:
     graph = json.load(graph)
 
 
 class FirstHopWalk:
     def __init__(self):
-        self.walk_length = 15
+        self.walk_length = 100
         self.graph = graph
         self.inverse_map = {}
-        self.vertices = [i for i in range(150)]
+        self.vertices = [i for i in range(4176)]
         for vertex in tqdm(self.vertices):
             edges = []
             for edge in self.graph.keys():
@@ -70,7 +70,7 @@ class FirstHopWalk:
 
 
 first_hop = FirstHopWalk()
-data, label = (first_hop.generate_walk_data_set(30))
+data, label = (first_hop.generate_walk_data_set(10))
 
 np.save("../toy_data/walk_dataset/label_iris.npy", label)
 np.save("../toy_data/walk_dataset/data-iris.npy", data)

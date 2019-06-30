@@ -1,8 +1,7 @@
-from sklearn import datasets
 import numpy as np
 import json
 
-iris = datasets.load_iris()
+data = np.load("../toy_data/abone.npy")
 
 
 def quartile_calculation(features):
@@ -14,8 +13,8 @@ def quartile_calculation(features):
 
 
 def make_hyper_edges(features):
-    q_1, q_2, q_3,q_4 = (quartile_calculation(features))
-    f_1, f_2, f_3, f_4,f_5 = [], [], [], [],[]
+    q_1, q_2, q_3, q_4 = (quartile_calculation(features))
+    f_1, f_2, f_3, f_4, f_5 = [], [], [], [], []
     for index in range(len(features)):
         if features[index] < q_1:
             f_1.append(index)
@@ -27,13 +26,13 @@ def make_hyper_edges(features):
             f_4.append(index)
         elif features[index] >= q_4:
             f_5.append(index)
-    return f_1, f_2, f_3, f_4,f_5
+    return f_1, f_2, f_3, f_4, f_5
 
 
 def make_hyper_graph(data_set):
     hyper_graph = {}
     for columns in range(data_set.shape[1]):
-        f_1, f_2, f_3, f_4,f_5 = make_hyper_edges(data_set[:, columns])
+        f_1, f_2, f_3, f_4, f_5 = make_hyper_edges(data_set[:, columns])
         hyper_graph['A' + str(columns + 1) + "f1"] = f_1
         hyper_graph['A' + str(columns + 1) + "f2"] = f_2
         hyper_graph['A' + str(columns + 1) + "f3"] = f_3
@@ -42,6 +41,6 @@ def make_hyper_graph(data_set):
 
     return hyper_graph
 
-
-with open("../toy_data/iris_graph.json", 'w') as graph:
-    json.dump(make_hyper_graph(iris['data']), graph)
+print(make_hyper_graph(data[:, :(data.shape[1] - 2)]).keys())
+with open("../toy_data/abone_graph.json", 'w') as graph:
+    json.dump(make_hyper_graph(data[:, :(data.shape[1] - 2)]), graph)
